@@ -57,8 +57,8 @@ set ambiwidth=double
 set laststatus=2
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-map <C-J> :bnext<CR>
-map <C-K> :bprev<CR>
+nmap <C-j> :bnext<CR>
+nmap <C-k> :bprev<CR>
 map tu :tabe<CR>
 map = nzz
 map - Nzz
@@ -84,9 +84,6 @@ map ] $
 inoremap fj <Esc>
 inoremap jf <Esc>
 
-set completeopt=menuone,noinsert,noselect,popuphidden
-set completepopup=highlight:Pmenu,border:off
-
 
 "PLUG CONFIG
 call plug#begin('~/.vim/plugged')
@@ -97,14 +94,14 @@ Plug 'vim-airline/vim-airline-themes'
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin' 
 Plug 'ryanoasis/vim-devicons'
-Plug 'Valloric/YouCompleteMe'
+"Plug 'Valloric/YouCompleteMe'
 " CSharp
 Plug 'OmniSharp/omnisharp-vim'
 
 " in <space>cc to comment a line <space>cu to uncomment a line
 Plug 'scrooloose/nerdcommenter' 
 
-" 快速查找文件 
+" find files 
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
 "auto-pairs
@@ -112,7 +109,7 @@ Plug 'jiangmiao/auto-pairs'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 
 " Mappings, code-actions available flag and statusline integration
-Plug 'nickspoons/vim-sharpenup'
+"Plug 'nickspoons/vim-sharpenup'
 
 " Linting/error highlighting
 Plug 'dense-analysis/ale'
@@ -120,7 +117,20 @@ Plug 'dense-analysis/ale'
 " Autocompletion
 Plug 'prabirshrestha/asyncomplete.vim'
 
+
+" Track the engine.
+Plug 'SirVer/ultisnips'
+
+" Snippets are separated from the engine. Add this if you want them:
+Plug 'honza/vim-snippets'
+
 call plug#end()
+" youcompleteme config
+"let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
+
+"asyncomplete config
+set completeopt=menuone,noinsert,noselect,popuphidden
+set completepopup=highlight:Pmenu,border:off
 
 
 
@@ -146,22 +156,25 @@ autocmd FileType cs nmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_ac
 autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
 autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
 "can replace vim R
-"autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
+autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
+let g:OmniSharp_diagnostic_listen = 2
 
 "Supprot for different goto definitions for different file types.
-let g:OmniSharp_selector_ui = 'fzf'    " Use fzf
+let g:OmniSharp_selector_ui = 'fzf' 
+"  Use fzf
 let g:OmniSharp_selector_findusages = 'fzf'
-let g:OmniSharp_popup_mappings = {
-\ 'sigNext': '<C-n>',
-\ 'sigPrev': '<C-p>',
-\ 'sigParamNext': 'C-l',
-\ 'sigParamPrev': 'C-h',
+let g:OmniSharp_popup_mappings = { 
+\ 'sigNext': '<C-n>', 
+\ 'sigPrev': '<C-p>', 
+\ 'sigParamNext': '<C-l>', 
+\ 'sigParamPrev': '<C-h>',
 \ 'lineDown': ['<C-e>', 'j'],
 \ 'lineUp': ['<C-y>', 'k']
 \}
+let g:Omnisharp_prefer_popups=1
 
 "ALE CONFIG
 " ALE: {{{
@@ -172,28 +185,18 @@ let g:ale_sign_style_error = 'E'
 let g:ale_sign_style_warning = 'W'
 
 let g:ale_linters = { 'cs': ['OmniSharp'] }
-let g:ale_lint_on_enter = 0
+let g:ale_lint_on_enter = 1
 " }}}
-	
 " Asyncomplete: {{{
 let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_auto_completeopt = 0
+let g:asyncomplete_auto_completeopt =0
 " }}}
+"
 
-" Sharpenup: {{{
-" All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
-" :OmniSharpGotoDefinition
-let g:sharpenup_map_prefix = '<Space>os'
-let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
-let g:sharpenup_statusline_opts.Highlight = 0
 
-"augroup OmniSharpIntegrations
-  "autocmd!
-  "autocmd User OmniSharpProjectUpdated,OmniSharpReady call lightline#update()
-"augroup END
-"" }}}
 
-" OmniSharp: {{{
+
+ "OmniSharp: {{{
 let g:OmniSharp_popup_position = 'peek'
 if has('nvim')
   let g:OmniSharp_popup_options = {
@@ -246,35 +249,6 @@ let g:airline#extensions#fzf#enabled = 1
 let g:airline_detect_spell=1
 
 
-"COC CONFIG
-"let g:coc_global_extensions = ["coc-json","coc-tsserver","coc-highlight","coc-omnisharp"]
-"nd! - Formatting selected code.
- "xmap <leader>f  <Plug>(coc-format-selected)
- "nmap <leader>f  <Plug>(coc-format-selected)
-" Use tab for trigger completion with characters ahead and navigate.
-" " NOTE: Use command ':verbose imap <tab>' to make sure tab is not mapped by
-" " other plugin before putting this into your config.
-"inoremap <silent><expr> <TAB>
-       "\ pumvisible() ? "\<C-n>" :
-       "\ <SID>check_back_space() ? "\<TAB>" :
-       "\ coc#refresh()
-"inoremap <expr><S-TAB> pumvisible() ? "\<C-p>" : "\<C-h>"
-"function! s:check_back_space() abort
-          "let col = col('.') - 1
-          "return !col || getline('.')[col - 1]  =~# '\s'
-"endfunction
-""" Make <CR> auto-select the first completion item and notify coc.nvim to
-""" " format on enter, <cr> could be remapped by other vim plugin
- "inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
-                               "\: "\<C-g>u\<CR>\<c-r>=coc#on_enter()\<CR>"
-"inoremap <silent><expr> <c-p> coc#refresh()
-" GoTo   code navigation.
-"nmap <silent> gd <Plug>(coc-definition)
-"nmap <silent> gy <Plug>(coc-type-definition)
-"nmap <silent> gi <Plug>(coc-implementation)
-"nmap <silent> gr <Plug>(coc-references)
-
-
 "" FZF CONFIG
 let g:fzf_buffers_jump = 1
 command! -bang -nargs=* Ag
@@ -314,4 +288,33 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
   \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
 
 
+"snippets config
+let g:UltiSnipsExpandTrigger="<s-tab>"
+let g:UltiSnipsJumpForwardTrigger="<RC>"
+let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
+
+"COC CONFIG
+let g:coc_global_extensions = ["coc-json","coc-tsserver","coc-omnisharp"]
+
+"use tab for trigger completion with characters ahead and navigate.
+" note: use command ':verbose imap <tab>' to make sure tab is not mapped by
+" other plugin before putting this into your config.
+inoremap <silent><expr> <tab>
+	   \ pumvisible() ? "\<c-n>" :
+	   \ <sid>check_back_space() ? "\<tab>" :
+	   \ coc#refresh()
+inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
+function! s:check_back_space() abort
+  let col = col('.') - 1
+  return !col || getline('.')[col - 1]  =~# '\s'
+endfunction
+
+"" make <cr> auto-select the first completion item and notify coc.nvim to
+"" " format on enter, <cr> could be remapped by other vim plugin
+inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
+					   \: "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"
+inoremap <silent><expr> <c-p> coc#refresh()
+
+
+"test git pull
