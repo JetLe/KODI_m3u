@@ -7,10 +7,28 @@ export NVM_DIR="$HOME/.nvm"
 # Load aliases and shortcuts if existent.
 [ -f "$HOME/.config/shortcutrc" ] && source "$HOME/.config/shortcutrc"
 [ -f "$HOME/.config/zsh/aliases.zsh" ] && source "$HOME/.config/zsh/aliases.zsh"
-
 autoload -U colors && colors
 #PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%T%-%{$fg[red]%}]%{$reset_color%}$%b "
 PS1="%B%{$fg[red]%}[%{$fg[yellow]%}%n%{$fg[green]%}@%{$fg[blue]%}%T %{$fg[magenta]%}%~%{$fg[red]%}]%{$reset_color%}$%b "
+
+#function list
+tq() curl wttr.in/$1
+fy() {
+    word=`echo $1 | tr -d '\n' | xxd -plain | sed 's/\(..\)/%\1/g'`
+    result=$(curl -s "http://fanyi.youdao.com/openapi.do?keyfrom=CoderVar&key=802458398&type=data&doctype=json&version=1.1&q=$word")
+    echo "\033[31m【检索】:\033[0m\c"
+    echo  $result | awk -F 'query":' '{print $(2)}' | awk -F ',' '{print $1}'
+    echo "\033[33m【释义】:\033[0m\c"
+    echo  $result | awk -F ':' '{print $(2)}' | awk -F ',' '{print $1}'
+    echo "\033[36m【说明】:\033[0m\c"
+    echo  $result | awk -F 'explains":' '{print $(2)}' | awk -F '}' '{print $1}'
+
+    if test '-s' = $2; then
+        say $(echo $result | awk -F ':' '{print $(2)}' | awk -F ',' '{print $1}');
+    fi
+}
+
+
 
 
 
@@ -27,8 +45,8 @@ compinit
 _comp_options+=(globdots)		# Include hidden files.
 
 # map key history
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+bindkey '^n' history-substring-search-up
+bindkey '^p' history-substring-search-down
 
 
 # vi mode
@@ -90,3 +108,7 @@ source $HOME/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting
 source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh 2>/dev/null
 source $HOME/.config/zsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh 2>/dev/null
 source $HOME/.config/zsh/plugins/history-substring-search/history-substring-search.zsh 2>/dev/null
+
+
+
+
