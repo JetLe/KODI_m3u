@@ -45,8 +45,10 @@ compinit
 _comp_options+=(globdots)		# Include hidden files.
 
 # map key history
-bindkey '^[[A' history-substring-search-up
-bindkey '^[[B' history-substring-search-down
+zle -N  history-substring-search-up
+bindkey '^[' history-substring-search-up
+zle -N  history-substring-search-down
+bindkey '^]' history-substring-search-down
 
 
 # vi mode
