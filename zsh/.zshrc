@@ -45,8 +45,8 @@ compinit
 _comp_options+=(globdots)		# Include hidden files.
 
 # map key history
-bindkey '^n' history-substring-search-up
-bindkey '^p' history-substring-search-down
+bindkey '^[[A' history-substring-search-up
+bindkey '^[[B' history-substring-search-down
 
 
 # vi mode
@@ -82,33 +82,28 @@ zle -N zle-line-init
 echo -ne '\e[5 q' # Use beam shape cursor on startup.
 preexec() { echo -ne '\e[5 q' ;} # Use beam shape cursor for each new prompt.
 
- #Use lf to switch directories and bind it to ctrl-o
-#lfcd () {
-	#tmp="$(mktemp)"
-	#lf -last-dir-path="$tmp" "$@"
-	#if [ -f "$tmp" ]; then
-		#dir="$(cat "$tmp")"
-		#rm -f "$tmp"
-		#[ -d "$dir" ] && [ "$dir" != "$(pwd)" ] && cd "$dir"
-	#fi
-#}
-#bindkey -s '^o' 'lfcd\n'
 
-# Edit line in vim with ctrl-e:
-autoload edit-command-line; zle -N edit-command-line
-bindkey '^e' edit-command-line
-#export ZSH="/home/vac/.oh-my-zsh"
+### Added by Zinit's installer
+if [[ ! -f $HOME/.config/zsh/.zinit/bin/zinit.zsh ]]; then
+    print -P "%F{33}▓▒░ %F{220}Installing %F{33}DHARMA%F{220} Initiative Plugin Manager (%F{33}zdharma/zinit%F{220})…%f"
+    command mkdir -p "$HOME/.config/zsh/.zinit" && command chmod g-rwX "$HOME/.config/zsh/.zinit"
+    command git clone https://github.com/zdharma/zinit "$HOME/.config/zsh/.zinit/bin" && \
+        print -P "%F{33}▓▒░ %F{34}Installation successful.%f%b" || \
+        print -P "%F{160}▓▒░ The clone has failed.%f%b"
+fi
 
-#ZSH_THEME="cloud"
-#plugins=(git zsh-autosuggestions zsh-syntax-highlighting )
-#source $ZSH/oh-my-zsh.sh
-
-# Load zsh-syntax-highlighting; should be last.
-source $HOME/.config/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.plugin.zsh 2>/dev/null
-source $HOME/.config/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.plugin.zsh 2>/dev/null
-source $HOME/.config/zsh/plugins/colored-man-pages/colored-man-pages.plugin.zsh 2>/dev/null
-source $HOME/.config/zsh/plugins/history-substring-search/history-substring-search.zsh 2>/dev/null
-
-
-
-
+source "$HOME/.config/zsh/.zinit/bin/zinit.zsh"
+autoload -Uz _zinit
+(( ${+_comps} )) && _comps[zinit]=_zinit
+zinit light zsh-users/zsh-autosuggestions
+zinit light zsh-users/zsh-syntax-highlighting
+zinit light ael-code/zsh-colored-man-pages
+zinit light zsh-users/zsh-history-substring-search
+# Load a few important annexes, without Turbo
+# (this is currently required for annexes)
+zinit light-mode for \
+    zinit-zsh/z-a-rust \
+    zinit-zsh/z-a-as-monitor \
+    zinit-zsh/z-a-patch-dl \
+    zinit-zsh/z-a-bin-gem-node
+### End of Zinit's installer chunk
