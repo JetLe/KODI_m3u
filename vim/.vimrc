@@ -1,5 +1,4 @@
 let mapleader=" "
-set shell =sh
 set encoding=UTF-8
 set langmenu=en_US.UTF-8
 filetype on
@@ -57,8 +56,10 @@ set ambiwidth=double
 set laststatus=2
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-nmap <C-j> :bnext<CR>
-nmap <C-k> :bprev<CR>
+
+"key config
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprev<CR>
 map tu :tabe<CR>
 map = nzz
 map - Nzz
@@ -79,11 +80,8 @@ noremap W :w<CR>
 noremap Q :q<CR>
 noremap S :source $MYVIMRC<CR>
 map <C-a> :<Esc> ggvG
-map [ ^
-map ] $
 inoremap fj <Esc>
 inoremap jf <Esc>
-
 
 "PLUG CONFIG
 call plug#begin('~/.vim/plugged')
@@ -144,7 +142,7 @@ autocmd FileType cs nmap <silent> <buffer> <Leader>ost <Plug>(omnisharp_type_loo
 autocmd FileType cs nmap <silent> <buffer> <Leader>osd <Plug>(omnisharp_documentation)
 autocmd FileType cs nmap <silent> <buffer> <Leader>osfs <Plug>(omnisharp_find_symbol)
 autocmd FileType cs nmap <silent> <buffer> <Leader>osfx <Plug>(omnisharp_fix_usings)
-autocmd FileType cs imap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
+autocmd FileType cs nmap <silent> <buffer> <C-\> <Plug>(omnisharp_signature_help)
 " Navigate up and down by method/property/field
 autocmd FileType cs nmap <silent> <buffer> <C-[> <Plug>(omnisharp_navigate_up)
 autocmd FileType cs nmap <silent> <buffer>  <C-]> <Plug>(omnisharp_navigate_down)
@@ -261,9 +259,8 @@ command! -bang -nargs=* Ag
 "link project files for fzf
 command! -bang Fdotnet call fzf#vim#files('/home/vac/code/centaline.com.cn/dotnet', <bang>0)
 
-
-nnoremap <silent> <Leader>a :Ag<CR>
-nnoremap <silent> <Leader>\ :Files ~<CR>
+nnoremap <silent> <LEADER>a :Ag<CR>
+nnoremap <silent> <LEADER>\ :Files ~<CR>
 let g:fzf_preview_window = ['right:30%', 'ctrl-/']
 "let g:fzf_layout = { 'down': '40%' }
 let g:fzf_history_dir = '~/.local/share/fzf-history'
@@ -295,7 +292,7 @@ let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
 
 "COC CONFIG
-let g:coc_global_extensions = ["coc-json","coc-tsserver","coc-omnisharp"]
+let g:coc_global_extensions = ["coc-json","coc-tsserver"]
 
 "use tab for trigger completion with characters ahead and navigate.
 " note: use command ':verbose imap <tab>' to make sure tab is not mapped by
