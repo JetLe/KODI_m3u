@@ -56,7 +56,7 @@ set ambiwidth=double
 set laststatus=2
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
+"set foldmethod=indent
 "key config
 nmap <C-n> :bnext<CR>
 nmap <C-p> :bprev<CR>
@@ -116,6 +116,7 @@ Plug 'dense-analysis/ale'
 Plug 'prabirshrestha/asyncomplete.vim'
 
 
+Plug 'nickspoons/vim-sharpenup'
 " Track the engine.
 Plug 'SirVer/ultisnips'
 
@@ -155,7 +156,7 @@ autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_act
 autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
 "can replace vim R
 autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
-"autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
+autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
 let g:OmniSharp_diagnostic_listen = 2
@@ -185,11 +186,16 @@ let g:ale_sign_style_warning = 'W'
 let g:ale_linters = { 'cs': ['OmniSharp'] }
 let g:ale_lint_on_enter = 1
 " }}}
-" Asyncomplete: {{{
-let g:asyncomplete_auto_popup = 1
-let g:asyncomplete_auto_completeopt =0
-" }}}
-"
+"" Asyncomplete: {{{
+"let g:asyncomplete_auto_popup = 1
+"let g:asyncomplete_auto_completeopt =0
+"" }}}
+""
+" Sharpenup: {{{
+" All sharpenup mappings will begin with `<Space>os`, e.g. `<Space>osgd` for
+" :OmniSharpGotoDefinition
+let g:sharpenup_map_prefix = '<Space>os'
+let g:sharpenup_statusline_opts = { 'Text': '%s (%p/%P)' }
 
 
 
@@ -286,9 +292,9 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 
 
 "snippets config
-let g:UltiSnipsExpandTrigger="<s-tab>"
-let g:UltiSnipsJumpForwardTrigger="<RC>"
-let g:UltiSnipsJumpBackwardTrigger="<c-b>"
+let g:UltiSnipsExpandTrigger="<F8>"
+"let g:UltiSnipsJumpForwardTrigger="<RC>"
+"let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
 
 "COC CONFIG
