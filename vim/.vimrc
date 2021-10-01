@@ -122,8 +122,12 @@ Plug 'SirVer/ultisnips'
 
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
-
+Plug 'tmhedberg/SimpylFold'
 call plug#end()
+
+" SimpylFold Config
+let g:SimpylFold_docstring_preview = 1
+"
 " youcompleteme config
 "let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
 
