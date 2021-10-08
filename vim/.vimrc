@@ -54,12 +54,11 @@ let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 set ambiwidth=double
 "总是显示状态栏
 set laststatus=2
+set t_Co=256
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 "set foldmethod=indent
 "key config
-nmap <C-n> :bnext<CR>
-nmap <C-p> :bprev<CR>
 map tu :tabe<CR>
 map = nzz
 map - Nzz
@@ -72,16 +71,20 @@ map <LEADER>k <C-w>k
 map <LEADER>h <C-w>h
 map <LEADER>j <C-w>j
 map <LEADER><CR> :nohlsearch<CR>
-map <up> :res +5<CR>
-map <down> :res -5<CR>
-map <left> :vertical resize-5<CR>
-map <right> :vertical resize+5<CR>
-noremap W :w<CR>
-noremap Q :q<CR>
-noremap S :source $MYVIMRC<CR>
 map <C-a> :<Esc> ggvG
+nmap <C-j> :res +5<CR>
+nmap <C-k> :res -5<CR>
+nmap <C-h> :vertical resize+5<CR>
+nmap <C-l> :vertical resize-5<CR>
+nmap W :w<CR>
+nmap Q :q<CR>
+nmap S :source $MYVIMRC<CR>
+nmap <C-n> :bnext<CR>
+nmap <C-p> :bprev<CR>
 inoremap fj <Esc>
 inoremap jf <Esc>
+
+
 
 "PLUG CONFIG
 call plug#begin('~/.vim/plugged')
@@ -91,7 +94,7 @@ Plug 'vim-airline/vim-airline-themes'
 " File navigation
 Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
 Plug 'Xuyuanp/nerdtree-git-plugin' 
-Plug 'ryanoasis/vim-devicons'
+"Plug 'ryanoasis/vim-devicons'
 "Plug 'Valloric/YouCompleteMe'
 " CSharp
 Plug 'OmniSharp/omnisharp-vim'
@@ -113,7 +116,7 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 
 " Autocompletion
-Plug 'prabirshrestha/asyncomplete.vim'
+"Plug 'prabirshrestha/asyncomplete.vim'
 
 
 Plug 'nickspoons/vim-sharpenup'
@@ -123,7 +126,30 @@ Plug 'SirVer/ultisnips'
 " Snippets are separated from the engine. Add this if you want them:
 Plug 'honza/vim-snippets'
 Plug 'tmhedberg/SimpylFold'
+Plug 'gruvbox-community/gruvbox'
 call plug#end()
+
+
+"" Colors: {{{
+"augroup ColorschemePreferences
+  "autocmd!
+  """ These preferences clear some gruvbox background colours, allowing transparency
+  "autocmd ColorScheme * highlight Normal     ctermbg=NONE guibg=NONE
+  "autocmd ColorScheme * highlight SignColumn ctermbg=NONE guibg=NONE
+  "autocmd ColorScheme * highlight Todo       ctermbg=NONE guibg=NONE
+  """ Link ALE sign highlights to similar equivalents without background colours
+  "autocmd ColorScheme * highlight link ALEErrorSign   WarningMsg
+  "autocmd ColorScheme * highlight link ALEWarningSign ModeMsg
+  "autocmd ColorScheme * highlight link ALEInfoSign    Identifier
+"augroup END
+
+"" Use truecolor in the terminal, when it is supported
+"if has('termguicolors')
+  "set termguicolors
+"endif
+
+set background=dark
+colorscheme gruvbox
 
 " SimpylFold Config
 let g:SimpylFold_docstring_preview = 1
@@ -173,7 +199,7 @@ let g:OmniSharp_popup_mappings = {
 \ 'sigNext': '<C-n>', 
 \ 'sigPrev': '<C-p>', 
 \ 'sigParamNext': '<C-l>', 
-\ 'sigParamPrev': '<C-h>',
+\ 'sigParamPrev': ['<C-h>'],
 \ 'lineDown': ['<C-e>', 'j'],
 \ 'lineUp': ['<C-y>', 'k']
 \}
@@ -181,11 +207,11 @@ let g:Omnisharp_prefer_popups=1
 
 "ALE CONFIG
 " ALE: {{{
-let g:ale_sign_error = 'E'
-let g:ale_sign_warning = 'W'
-let g:ale_sign_info = 'I'
-let g:ale_sign_style_error = 'E'
-let g:ale_sign_style_warning = 'W'
+let g:ale_sign_error = 'e'
+let g:ale_sign_warning = 'w'
+let g:ale_sign_info = 'i'
+let g:ale_sign_style_error = 'se'
+let g:ale_sign_style_warning = 'sw'
 
 let g:ale_linters = { 'cs': ['OmniSharp'] }
 let g:ale_lint_on_enter = 1
