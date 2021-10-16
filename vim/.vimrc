@@ -88,48 +88,40 @@ inoremap jf <Esc>
 
 "PLUG CONFIG
 call plug#begin('~/.vim/plugged')
-" line theme
-Plug 'vim-airline/vim-airline'
-Plug 'vim-airline/vim-airline-themes'
-" File navigation
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' }
+Plug 'vim-airline/vim-airline' " line theme
+Plug 'vim-airline/vim-airline-themes' 
+Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " File navigation
 Plug 'Xuyuanp/nerdtree-git-plugin' 
-"Plug 'ryanoasis/vim-devicons'
+Plug 'ryanoasis/vim-devicons'
 "Plug 'Valloric/YouCompleteMe'
-" CSharp
-Plug 'OmniSharp/omnisharp-vim'
-
-" in <space>cc to comment a line <space>cu to uncomment a line
-Plug 'scrooloose/nerdcommenter' 
-
-" find files 
-Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
+Plug 'OmniSharp/omnisharp-vim' " CSharp
+Plug 'scrooloose/nerdcommenter' " in <space>cc to comment a line <space>cu to uncomment a line
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } } " find files 
 Plug 'junegunn/fzf.vim'
-"auto-pairs
-Plug 'jiangmiao/auto-pairs'
+Plug 'jiangmiao/auto-pairs' "auto-pairs
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
-
-" Mappings, code-actions available flag and statusline integration
-"Plug 'nickspoons/vim-sharpenup'
-
 " Linting/error highlighting
 Plug 'dense-analysis/ale'
-
-" Autocompletion
-"Plug 'prabirshrestha/asyncomplete.vim'
-
-
+"Plug 'prabirshrestha/asyncomplete.vim' " Autocompletion
 Plug 'nickspoons/vim-sharpenup'
-" Track the engine.
-Plug 'SirVer/ultisnips'
-
-" Snippets are separated from the engine. Add this if you want them:
-Plug 'honza/vim-snippets'
-Plug 'tmhedberg/SimpylFold'
+Plug 'SirVer/ultisnips' " Track the engine.
+Plug 'honza/vim-snippets' " Snippets are separated from the engine. Add this if you want them:
+"Plug 'tmhedberg/SimpylFold'
 Plug 'gruvbox-community/gruvbox'
+Plug 'tpope/vim-surround'
+Plug 'vim-scripts/taglist.vim'
+Plug 'easymotion/vim-easymotion'
+
 call plug#end()
 
+" taglist config
+let Tlist_Exit_OnlyWindow = 1
+let Tlist_Show_One_File = 1
+let Tlist_Use_Right_Window=1
+map <silent> <c-m> :TlistToggle<cr>
 
+" easymotion config
+ nmap ss <Plug>(easymotion-s2)
 "" Colors: {{{
 "augroup ColorschemePreferences
   "autocmd!
