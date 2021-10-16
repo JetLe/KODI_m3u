@@ -5,60 +5,42 @@ filetype on
 filetype indent on
 filetype plugin on
 filetype plugin indent on
-" 语法高亮
-syntax on
+syntax on " 语法高亮
 set number
 set relativenumber
 set ts=4
 set noeb
-"  禁止生成备份文件
-"  set nobackup
+"  set nobackup "  禁止生成备份文件
 set ruler
-" 自动缩进
-set autoindent
-" 光标所在行增加下划线
-set cursorline
-"  高亮显示所有搜索内容
-set hlsearch
-" 打开vim 执行nohlsearch命令
-exec "nohlsearch"
-" 忽略大小写
-set ignorecase
-" 输入及时搜索
-set incsearch
+set autoindent " 自动缩进
+set cursorline " 光标所在行增加下划线
+set hlsearch "  高亮显示所有搜索内容
+exec "nohlsearch"  
+set ignorecase " 忽略大小写
+set incsearch " 输入及时搜索
 set smartcase
-" 在被分割的窗口间显示空白，便于阅读
-set fillchars=vert:\ ,stl:\ ,stlnc:\
-"智能对齐
-set smartindent
-" 超出屏幕自动换行
-" set wrap
-" 命令模式的提示
-set wildmenu
-" 在处理未保存或只读文件时弹出确认
-set confirm
+set fillchars=vert:\ ,stl:\ ,stlnc:\  " 在被分割的窗口间显示空白，便于阅读
+set smartindent " 智能对齐
+" set wrap " 超出屏幕自动换行
+
+set wildmenu " 命令模式的提示
+set confirm " 在处理未保存或只读文件时弹出确认
 set noeb
 set vb t_vb=
-"coc_set_config
-set hidden
-" Having longer updatetime (default is 4000 ms = 4 s) leads to noticeable
-" delays and poor user experience.
+set hidden "coc_set_config
 set updatetime=100
-" Don't pass messages to |ins-completion-menu|.
-set shortmess+=c
 set clipboard=unnamed
 "Mode Settings
 let &t_SI.="\e[5 q" "SI = INSERT mode
 let &t_SR.="\e[4 q" "SR = REPLACE mode
 let &t_EI.="\e[1 q" "EI = NORMAL mode (ELSE)
 set ambiwidth=double
-"总是显示状态栏
 set laststatus=2
 set t_Co=256
 set autochdir
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-"set foldmethod=indent
-"key config
+"
+" key config
 map tu :tabe<CR>
 map = nzz
 map - Nzz
@@ -122,6 +104,7 @@ map <silent> <c-m> :TlistToggle<cr>
 
 " easymotion config
  nmap ss <Plug>(easymotion-s2)
+
 "" Colors: {{{
 "augroup ColorschemePreferences
   "autocmd!
@@ -143,8 +126,8 @@ map <silent> <c-m> :TlistToggle<cr>
 set background=dark
 colorscheme gruvbox
 
-" SimpylFold Config
-let g:SimpylFold_docstring_preview = 1
+"" SimpylFold Config
+"let g:SimpylFold_docstring_preview = 1
 "
 " youcompleteme config
 "let g:ycm_key_list_select_completion = ['<c-n>', '<Down>']
@@ -152,7 +135,6 @@ let g:SimpylFold_docstring_preview = 1
 "asyncomplete config
 set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:off
-
 
 
 " OMNISHARP CONFIG
@@ -243,6 +225,7 @@ let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
+let NERDTreeShowHidden=1
 let NERDTreeShowBookmarks = 1
 let NERDTreeMapOpenExpl = ""
 let NERDTreeMapOpenSplit = ""
