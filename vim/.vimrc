@@ -1,3 +1,5 @@
+" Disable compatibility with vi which can cause unexpected issues.
+set nocompatible
 let mapleader=" "
 set encoding=UTF-8
 set langmenu=en_US.UTF-8
@@ -6,6 +8,7 @@ filetype indent on
 filetype plugin on
 filetype plugin indent on
 syntax on " 语法高亮
+set history =1000
 set number
 set relativenumber
 set ts=4
@@ -14,6 +17,7 @@ set noeb
 set ruler
 set autoindent " 自动缩进
 set cursorline " 光标所在行增加下划线
+set cursorcolumn
 " set hlsearch "  高亮显示所有搜索内容
 exec "nohlsearch"  
 set ignorecase " 忽略大小写
@@ -21,9 +25,11 @@ set incsearch " 输入及时搜索
 set smartcase
 set fillchars=vert:\ ,stl:\ ,stlnc:\  " 在被分割的窗口间显示空白，便于阅读
 set smartindent " 智能对齐
-" set wrap " 超出屏幕自动换行
+set nowrap " 超出屏幕自动换行
 
 set wildmenu " 命令模式的提示
+set wildmode=list:longest
+set wildignore=*.docx,*.jpg,*.png,*.gif,*.pdf,*.pyc,*.exe,*.flv,*.img,*.xlsx
 set confirm " 在处理未保存或只读文件时弹出确认
 set noeb
 set vb t_vb=
@@ -65,16 +71,34 @@ nmap <C-n> :bnext<CR>
 nmap <C-p> :bprev<CR>
 inoremap fj <Esc>
 inoremap jf <Esc>
+inoremap \  <Esc>A
 
+
+" nmap <F1> :
+" nmap <F2> :
+" nmap <F3> :
+" nmap <F4> :
+" nmap <F5> :
+" nmap <F6> :
+" nmap <F7> :
+" nmap <F8> :
+" nmap <F9> :
+" nmap <F10> :
+" nmap <F11> :
+                                             " nmap <F12> <Plug>(omnisharp_go_to_definition)
+" nmap <F12> :OmniSharpGotoDefinition<CR>
 
 
 "PLUG CONFIG
 call plug#begin('~/.vim/plugged')
 Plug 'vim-airline/vim-airline' " line theme
 Plug 'vim-airline/vim-airline-themes' 
-Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " File navigation
-Plug 'Xuyuanp/nerdtree-git-plugin' 
+
+" Plug 'scrooloose/nerdtree', { 'on': 'NERDTreeToggle' } " File navigation
+" Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'ryanoasis/vim-devicons'
+Plug 'posva/vim-vue'
+Plug 'MaraniMatias/vue-formatter'
 "Plug 'Valloric/YouCompleteMe'
 Plug 'OmniSharp/omnisharp-vim' " CSharp
 Plug 'scrooloose/nerdcommenter' " in <space>cc to comment a line <space>cu to uncomment a line
@@ -86,26 +110,25 @@ Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'dense-analysis/ale'
 "Plug 'prabirshrestha/asyncomplete.vim' " Autocompletion
 Plug 'nickspoons/vim-sharpenup'
-Plug 'SirVer/ultisnips' " Track the engine.
+"Plug 'SirVer/ultisnips' " Track the engine.
 Plug 'honza/vim-snippets' " Snippets are separated from the engine. Add this if you want them:
 "Plug 'tmhedberg/SimpylFold'
 Plug 'gruvbox-community/gruvbox'
 Plug 'tpope/vim-surround'
 Plug 'vim-scripts/taglist.vim'
 Plug 'easymotion/vim-easymotion'
-
 call plug#end()
 
 " nerdcommenter config
 "
-let g:NERDSpaceDelims            = 1                                    " 在注释符号后加一个空格
-let g:NERDCompactSexyComs        = 1                                    " 紧凑排布多行注释
-let g:NERDDefaultAlign           = 'left'                               " 逐行注释左对齐
-"let g:NERDAltDelims_java         = 1                                    " JAVA 语言使用默认的注释符号
-let g:NERDCustomDelimiters       = {'c': {'left': '/*', 'right': '*/'}} " C 语言注释符号
-let g:NERDCommentEmptyLines      = 1                                    " 允许空行注释
-let g:NERDTrimTrailingWhitespace = 1                                    " 取消注释时删除行尾空格
-let g:NERDToggleCheckAllLines    = 1                                    " 检查选中的行操作是否成功
+" let g:NERDSpaceDelims            = 1                                    " 在注释符号后加一个空格
+" let g:NERDCompactSexyComs        = 1                                    " 紧凑排布多行注释
+" let g:NERDDefaultAlign           = 'left'                               " 逐行注释左对齐
+" "let g:NERDAltDelims_java         = 1                                    " JAVA 语言使用默认的注释符号
+" let g:NERDCustomDelimiters       = {'c': {'left': '/*', 'right': '*/'}} " C 语言注释符号
+" let g:NERDCommentEmptyLines      = 1                                    " 允许空行注释
+" let g:NERDTrimTrailingWhitespace = 1                                    " 取消注释时删除行尾空格
+" let g:NERDToggleCheckAllLines    = 1                                    " 检查选中的行操作是否成功
 
 " taglist config
 let Tlist_Exit_OnlyWindow = 1
@@ -165,8 +188,8 @@ set completeopt=menuone,noinsert,noselect,popuphidden
 set completepopup=highlight:Pmenu,border:off
 
 
-" OMNISHARP CONFIG
-autocmd FileType cs nmap <silent> <buffer> <leader>osgd <Plug>(omnisharp_go_to_definition)
+" OMNISHARP 
+autocmd FileType cs nmap <buffer> gd <Plug>(omnisharp_go_to_definition)
 autocmd FileType cs nmap <silent> <buffer> <Leader>osfu <Plug>(omnisharp_find_usages)
 autocmd FileType cs nmap <silent> <buffer> <Leader>osfi <Plug>(omnisharp_find_implementations)
 autocmd FileType cs nmap <silent> <buffer> <Leader>ospd <Plug>(omnisharp_preview_definition)
@@ -187,11 +210,11 @@ autocmd FileType cs nmap <silent> <buffer> <Leader>osca <Plug>(omnisharp_code_ac
 autocmd FileType cs xmap <silent> <buffer> <Leader>os. <Plug>(omnisharp_code_action_repeat)
 autocmd FileType cs nmap <silent> <buffer> <Leader>os= <Plug>(omnisharp_code_format)
 "can replace vim R
-autocmd FileType cs nmap <silent> <buffer> <Leader>osnm <Plug>(omnisharp_rename)
 autocmd FileType cs nmap <silent> <buffer> <Leader>osre <Plug>(omnisharp_restart_server)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>osst <Plug>(omnisharp_start_server)
 "autocmd FileType cs nmap <silent> <buffer> <Leader>ossp <Plug>(omnisharp_stop_server)
 let g:OmniSharp_diagnostic_listen = 2
+let g:OmniSharp_server_use_net6 = 1
 
 "Supprot for different goto definitions for different file types.
 let g:OmniSharp_selector_ui = 'fzf' 
@@ -257,44 +280,44 @@ endif
 
 " NERDTREE CONFIG
 " 启动 vim 时打开 NERDTree
- autocmd vimenter * NERDTree
+ " autocmd vimenter * NERDTree
 " 当打开 VIM，没有指定文件时和打开一个目录时，打开 NERDTree
 autocmd StdinReadPre * let s:std_in = 1
-autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
-autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
-autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
-autocmd StdinReadPre * let s:std_in = 1
+" autocmd VimEnter * if argc() == 0 && !exists("s:std_in") | NERDTree | endif
+" autocmd VimEnter * if argc() == 1 && isdirectory(argv()[0]) && !exists("s:std_in") | exe 'NERDTree' argv()[0] | wincmd p | ene | exe 'cd '.argv()[0] | endif
+" autocmd bufenter * if (winnr("$") == 1 && exists("b:NERDTreeType") && b:NERDTreeType == "primary") | q | end
+" autocmd StdinReadPre * let s:std_in = 1
 let NERDTreeIgnore = [ '\.pyc$', '\.pyo$', '\.obj$', '\.o$', '\.egg$', '^\.git$', '^\.repo$', '^\.svn$', '^\.hg$' ]
-map ff :NERDTreeToggle<CR>
+" map ff :NERDTreeToggle<CR>
 let g:webdevicons_enable_nerdtree = 1
 let g:webdevicons_conceal_nerdtree_brackets = 1
 let g:webdevicons_enable_airline_tabline = 1
 let g:webdevicons_enable_airline_statusline = 1
-let NERDTreeHighlightCursorline = 1       " 高亮当前行
+" let NERDTreeHighlightCursorline = 1       " 高亮当前行
 "let NERDTreeShowLineNumbers     = 1       " 显示行号
-let NERDTreeShowHidden=1
-let NERDTreeShowBookmarks = 1
-let NERDTreeMapOpenExpl = ""
-let NERDTreeMapOpenSplit = ""
-let NERDTreeOpenVSplit = ""
-let NERDTreeMapActivateNode = "i"
-let NERDTreeMapOpenInTab = "o"
-let NERDTreeMapPreview = ""
-let NERDTreeMapCloseDir = "n"
-let NERDTreeMapChangeRoot = "y"
-let g:NERDTreeGitStausIndicatorMapCustom = { 
-		\ "Modified"  : "✹",
-\ "Staged"    : "✚",
-\ "Untracked" : "✭",
-\ "Renamed"   : "➜",
-\ "Unmerged"  : "═",
-\ "Deleted"   : "✖",
-\ "Dirty"     : "✗",
-\ "Clean"     : "✔︎",
-\ 'Ignored'   : '☒',
-\ "Unknown"   : "?"
-\ }
-
+" let NERDTreeShowHidden=1
+" let NERDTreeShowBookmarks = 1
+" let NERDTreeMapOpenExpl = ""
+" let NERDTreeMapOpenSplit = ""
+" let NERDTreeOpenVSplit = ""
+" let NERDTreeMapActivateNode = "i"
+" let NERDTreeMapOpenInTab = "o"
+" let NERDTreeMapPreview = ""
+" let NERDTreeMapCloseDir = "n"
+" let NERDTreeMapChangeRoot = "y"
+" let g:NERDTreeGitStausIndicatorMapCustom = {
+"         \ "Modified"  : "✹",
+" \ "Staged"    : "✚",
+" \ "Untracked" : "✭",
+" \ "Renamed"   : "➜",
+" \ "Unmerged"  : "═",
+" \ "Deleted"   : "✖",
+" \ "Dirty"     : "✗",
+" \ "Clean"     : "✔︎",
+" \ 'Ignored'   : '☒',
+" \ "Unknown"   : "?"
+" \ }
+"
 "AIRLINE CONFIG 
 let g:airline_powerline_fonts=1
 let g:airline#extensions#tabline#enabled = 1
@@ -355,14 +378,29 @@ autocmd  FileType fzf set laststatus=0 noshowmode noruler
 
 
 "snippets config
-let g:UltiSnipsExpandTrigger="<F8>"
-"let g:UltiSnipsJumpForwardTrigger="<RC>"
+"let g:UltiSnipsExpandTrigger=";"
+let g:UltiSnipsJumpForwardTrigger="<c><RC>"
 "let g:UltiSnipsJumpBackwardTrigger="<c-b>"
 
 
 "COC CONFIG
-let g:coc_global_extensions = ["coc-json","coc-tsserver"]
+"
+" Always show the signcolumn, otherwise it would shift the text each time
+" diagnostics appear/become resolved.
+if has("nvim-0.5.0") || has("patch-8.1.1564")
+  " Recently vim can merge signcolumn and number column into one
+  set signcolumn=number
+else
+  set signcolumn=yes
+endif
+let g:coc_global_extensions = ["coc-json","coc-tsserver","coc-explorer","coc-vimlsp"]
 
+" Highlight the symbol and its references when holding the cursor.
+autocmd CursorHold * silent call CocActionAsync('highlight')
+
+" coc-explorer config
+"
+:nmap ff <Cmd>CocCommand explorer<CR>
 "use tab for trigger completion with characters ahead and navigate.
 " note: use command ':verbose imap <tab>' to make sure tab is not mapped by
 " other plugin before putting this into your config.
@@ -371,16 +409,27 @@ inoremap <silent><expr> <tab>
 	   \ <sid>check_back_space() ? "\<tab>" :
 	   \ coc#refresh()
 inoremap <expr><s-tab> pumvisible() ? "\<c-p>" : "\<c-h>"
+
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]  =~# '\s'
 endfunction
 
-"" make <cr> auto-select the first completion item and notify coc.nvim to
-"" " format on enter, <cr> could be remapped by other vim plugin
+" make <cr> auto-select the first completion item and notify coc.nvim to
+
+" " format on enter, <cr> could be remapped by other vim plugin
 inoremap <silent><expr> <cr> pumvisible() ? coc#_select_confirm()
 					   \: "\<c-g>u\<cr>\<c-r>=coc#on_enter()\<cr>"
 inoremap <silent><expr> <c-p> coc#refresh()
 
+nmap <leader>rn <Plug>(coc-rename)
 
+" Formatting selected code.
+xmap <leader>f  <Plug>(coc-format-selected)
+nmap <leader>f  <Plug>(coc-format-selected)
+autocmd CursorHold * silent call CocActionAsync('highlight')
+" Applying codeAction to the selected region.
+" Example: `<leader>aap` for current paragraph
+"xmap <leader>m  <Plug>(coc-codeaction-selected)
+"nmap <leader>m  <Plug>(coc-codeaction-selected)
 "test git pull
